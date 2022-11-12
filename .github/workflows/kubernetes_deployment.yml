@@ -1,0 +1,27 @@
+
+name: "Deploy app to k8s cluster"
+on:
+  push:
+    # run on push to master
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Build the stack
+      run: docker-compose up -d
+
+    - name: Test
+      run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
+
+    - name: Deploy to AKS
+      run: |
+        az account set --subscription a2ba9ff7-3658-4acd-bbdd-279961ec4fac
+        az aks get-credentials --resource-group demo --name mercy
+        kubectl get namespace -oname | grep "namespace/clockifi-backend" \
+            || kubectl create namespace clockifi-backend
+        kubectl apply -f kubernetes -n clockifi-backend
+    
