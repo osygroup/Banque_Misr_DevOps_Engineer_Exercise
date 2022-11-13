@@ -104,7 +104,7 @@ The azure-vote-front kubernetes service is a Load Balancer, which helps us to re
 In a few minutes, the application is deployed and you can visit the application on a browser via the Load Balancer's public IP.
 
 <p align="center">
-  !<img src="https://user-images.githubusercontent.com/46828049/201539122-e20e3007-8121-4ee3-b710-da98a64c8e1e.jpg">
+  !<img src="https://user-images.githubusercontent.com/46828049/201540607-157929cb-35a9-4a76-995c-573ae78bb539.jpg">
  </p>
 
 
