@@ -15,8 +15,8 @@ jobs:
       run: docker-compose up -d
 
     - name: Test
-      run: curl localhost:8080
-      #run: docker run --network banque_misr_devops_engineer_exercise_frontend jwilder/dockerize -wait http://localhost:8080/healthcheck -timeout 120s -wait-retry-interval 5s
+      #run: curl localhost:8080
+      run: docker run --network banque_misr_devops_engineer_exercise_frontend jwilder/dockerize -wait http://localhost:8080/healthcheck -timeout 120s -wait-retry-interval 5s
 
     - name: Azure Login
       uses: azure/login@v1
