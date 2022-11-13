@@ -18,3 +18,8 @@ services:
       REDIS_PWD: redisPassword2
     ports:
         - "8080:80"
+    networks:
+      - frontend
+
+networks:
+  frontend:
