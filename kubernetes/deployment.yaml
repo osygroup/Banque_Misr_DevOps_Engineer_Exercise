@@ -28,6 +28,9 @@ spec:
       containers:
       - name: azure-vote-back
         image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 0
         env:
         - name: REDIS_PASSWORD
           value: "repassword"
