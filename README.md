@@ -46,7 +46,8 @@ Note that from the docker-compose.yaml, the redis database password is visible, 
 
 ## Deployment on Kubernetes (AKS)
 
-The voting app stack can be deployed on a kubernetes cluster (AKS in this case) via Github workflows pipeline. The cluster can be provisioned using Ansible. The credentials needed for the workflow to connect to the cluster are added as Github Actions secrets in order not to expose them. Other sensitive data can be passed to the pipelines via Github Actions secrets.  
+The voting app stack can be deployed on a kubernetes cluster (AKS in this case) via Github workflows pipeline. The cluster can be provisioned using Ansible. There is aan Ansible Playbook to help create an AKS cluster in the root of the repo (azure_create_aks.yml). Install Ansible on your machine and run the playbook.  
+The credentials needed for the workflow to connect to the cluster are added as Github Actions secrets in order not to expose them. Other sensitive data can be passed to the pipelines via Github Actions secrets.  
 
 The Github workflow kubernetes_deployment.yml (in .github/workflows directory) has all the steps listed to deploy the application. As seen on this file:
 - The application can be triggered on push to the main branch, on creation of a pull request to the main branch, and on the click of a button (Workflow Dispatch)
