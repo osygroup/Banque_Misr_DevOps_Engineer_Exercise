@@ -15,8 +15,8 @@ jobs:
       run: docker-compose up -d
 
     - name: Test
-      run: docker network inspect banque_misr_devops_engineer_exercise_default
-      #run: docker run --network container:azure-vote-front jwilder/dockerize -wait http://172.17.0.1:8080/healthcheck -timeout 120s -wait-retry-interval 5s
+      #run: docker network inspect banque_misr_devops_engineer_exercise_default
+      run: docker run --network container:azure-vote-front jwilder/dockerize -wait http://172.18.0.2:8080/healthcheck -timeout 120s -wait-retry-interval 5s
 
     - name: Azure Login
       uses: azure/login@v1
