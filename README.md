@@ -14,6 +14,11 @@ This project takes into consideration the following conditions:
  
 The application is Two-tier architecture consists of two layers: Client Tier (named "Azure-Vote-Front") and Database/Data Tier (named "Azure-Vote-Back).
 
+<p align="center">
+  !<img src="https://user-images.githubusercontent.com/46828049/201533073-fc0e8d63-8ba2-4bd1-a4a2-0954c1253456.png">
+</p>
+
+
 The Client Tier is a Python Flask app, while the Data Tier is a Redis Database.
 
 The voting app's stack can be deployed on Docker locally with the use of docker-compose, and also on kubernetes using Github Workflows.
