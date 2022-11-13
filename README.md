@@ -1,10 +1,9 @@
 # Banque_Misr_DevOps_Engineer_Exercise
-Submission for Banque Misr DevOps Engineer Exercise
 
 
 In this project, a voting app "Cats Vs Dogs" application is deployed to an Azure Kubernetes Service cluster. Existing development tools such as Docker Compose are used to locally build and test the application.
 
-This project takes into consideration the following conditions:
+This project takes into consideration the following conditions:  
 
 - The infrastructure (running containers) and required services provisioning as well as application deployment must be automated and can be triggered with a click on a button or a command.
 - Password for database must be encrypted.
@@ -19,49 +18,49 @@ The Client Tier is a Python Flask app, while the Data Tier is a Redis Database.
 
 The voting app's stack can be deployed on Docker locally with the use of docker-compose, and also on kubernetes using Github Workflows.
 
-DEPLOYMENT ON DOCKER
+## Deployment on Docker
 
-To deploy the app on Docker locally, clone this repo on your machine:
+### To deploy the app on Docker locally, clone this repo on your machine:  
 
 git clone [https://github.com/Azure-Samples/azure-voting-app-redis.git](https://github.com/osygroup/Banque_Misr_DevOps_Engineer_Exercise.git)
 
-Change into the cloned directory:
+Change into the cloned directory:  
 
-cd azure-voting-app-redis
+cd azure-voting-app-redis  
 
 Then use the docker-compose.yaml file to create the container image, download the Redis image, and start the application:
 
-docker-compose up -d
+docker-compose up -d  
 
 Note that from the docker-compose.yaml, the redis database password is visible, which can be changed to any value of choice. This is for development scenarios only.
 
 
-DEPLOYMENT ON AKS
+## Deployment on Kubernetes (AKS)
 
-The voting app stack can be deployed on a kubernetes cluster (AKS in this case) via Github workflows pipeline. The cluster can be provisioned using Ansible. The credentials needed for the workflow to connect to the cluster are added as Github Actions secrets in order not to expose them. Other sensitive data can be passed to the pipelines via Github Actions secrets.
+The voting app stack can be deployed on a kubernetes cluster (AKS in this case) via Github workflows pipeline. The cluster can be provisioned using Ansible. The credentials needed for the workflow to connect to the cluster are added as Github Actions secrets in order not to expose them. Other sensitive data can be passed to the pipelines via Github Actions secrets.  
 
 The Github workflow kubernetes_deployment.yml (in .github/workflows directory) has all the steps listed to deploy the application. As seen on this file:
 - The application can be triggered on push to the main branch, on creation of a pull request to the main branch, and on the click of a button (Workflow Dispatch)
-- The Client Tier is tested on every run on the pipeline to ensure Continuous Testing.
+- The Client Tier is tested on every run on the pipeline to ensure Continuous Testing.  
 
-The kubernetes manifest files (in the kubernetes directory) are configured to achieve scalability, database persistence, and password encryption.
+The kubernetes manifest files (in the kubernetes directory) are configured to achieve scalability, database persistence, and password encryption.  
 
-For scalability of the frontend (Azure-Vote-Front), Horizontal Pod Autoscaler resource (hpa.yml) is used to achieve this. This resource is used to adjust the number of pods in a deployment depending on CPU utilization. In the azure-vote-front deployment, the front-end container already requests 0.25 CPU, with a limit of 0.5 CPU. HPA autoscales the number of pods in the azure-vote-front deployment. If average CPU utilization across all pods exceeds 50% of their requested usage, the autoscaler increases the pods up to a maximum of 10 instances. A minimum of 3 instances is then defined for the deployment.
+For scalability of the frontend (Azure-Vote-Front), Horizontal Pod Autoscaler resource (hpa.yml) is used to achieve this. This resource is used to adjust the number of pods in a deployment depending on CPU utilization. In the azure-vote-front deployment, the front-end container already requests 0.25 CPU, with a limit of 0.5 CPU. HPA autoscales the number of pods in the azure-vote-front deployment. If average CPU utilization across all pods exceeds 50% of their requested usage, the autoscaler increases the pods up to a maximum of 10 instances. A minimum of 3 instances is then defined for the deployment.  
 
-For database persistence, a Persistent Vomume (PV) resource is created, and is mounted on the Redis database using Persistent Volume Claim resource. This enables the data stored in the database to be persistent, even after destruction of the redis pod. The PV already exists in the cluster before the deployment of the stack.
+For database persistence, a Persistent Vomume (PV) resource is created, and is mounted on the Redis database using Persistent Volume Claim resource. This enables the data stored in the database to be persistent, even after destruction of the redis pod. The PV already exists in the cluster before the deployment of the stack.  
 
-For encrypting the Redis database's password, a Secret resource is created, and is referenced in the azure-vote-back deployment. This enables the protection of the database's password as the scret is encrypted.
+For encrypting the Redis database's password, a Secret resource is created, and is referenced in the azure-vote-back deployment. This enables the protection of the database's password as the scret is encrypted.  
 
-To manually deploy the voting app on a kubernetes cluster:
-Connect to your kubernetes cluster as instructed by your cluster provider.
+### To manually deploy the voting app on a kubernetes cluster:  
+Connect to your kubernetes cluster as instructed by your cluster provider.  
 
-Create a namespace for the application:
-kubectl create namespace vote_app
+Create a namespace for the application:  
+kubectl create namespace vote_app  
 
-Create secret for the database password:
-kubectl create secret generic redis --from-literal="REDIS_PASSWORD=pass1234" -n vote-app
+Create secret for the database password:  
+kubectl create secret generic redis --from-literal="REDIS_PASSWORD=pass1234" -n vote-app  
 
-Create a yaml file for the Redis database's Persistent Volume with the following content:
+Create a yaml file for the Redis database's Persistent Volume with the following content:  
 
 apiVersion: v1
 kind: PersistentVolume
