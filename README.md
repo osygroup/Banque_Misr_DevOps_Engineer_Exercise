@@ -11,3 +11,10 @@ This project takes into consideration the following:
 - The database must persist the data after restarts.
 - The application can be scaled automatically to handle increased loads.
 - Changes to the application’s code must be automatically scanned/tested before they are merged to the master branch
+
+
+ 
+The application is Two-tier architecture consists of two layers: Client Tier (named "Azure-Vote-Front") and Database/Data Tier (named "Azure-Vote-Back).
+
+The Client Tier is a Python Flask app, while the Data Tier is a Redis Database.
+
