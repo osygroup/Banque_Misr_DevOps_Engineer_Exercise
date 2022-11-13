@@ -21,7 +21,7 @@ jobs:
       run: |
         sleep 10
         curl localhost:8080/
-        if curl -s localhost:8080 | grep 'Voting'
+        if curl -s localhost:8080 | grep 'Azure Voting App'
         then
             echo "Test passed!"
         else
