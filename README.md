@@ -7,11 +7,10 @@ In this project, a voting app "Cats Vs Dogs" application is deployed to an Azure
 This project takes into consideration the following conditions:
 
 - The infrastructure (running containers) and required services provisioning as well as application deployment must be automated and can be triggered with a click on a button or a command.
-- Username and password for database must be encrypted.
+- Password for database must be encrypted.
 - The database must persist the data after restarts.
 - The application can be scaled automatically to handle increased loads.
 - Changes to the application’s code must be automatically scanned/tested before they are merged to the master branch
-
 
  
 The application is Two-tier architecture consists of two layers: Client Tier (named "Azure-Vote-Front") and Database/Data Tier (named "Azure-Vote-Back).
@@ -39,9 +38,54 @@ Note that from the docker-compose.yaml, the redis database password is visible, 
 
 DEPLOYMENT ON AKS
 
-The voting app stack can be deployed on a kubernetes cluster (AKS in this case). The cluster can be provisioned using Ansible. This deployment factors in all the  conditions listed earlier.
+The voting app stack can be deployed on a kubernetes cluster (AKS in this case) via Github workflows pipeline. The cluster can be provisioned using Ansible. The credentials needed for the workflow to connect to the cluster are added as Github Actions secrets in order not to expose them. Other sensitive data can be passed to the pipelines via Github Actions secrets.
 
-The Github workflow (in .github/workflows directory) has all the steps listed to deploy the application. As seen on this file:
-The application can be triggered on push to the main branch, and on the click of a button 
+The Github workflow kubernetes_deployment.yml (in .github/workflows directory) has all the steps listed to deploy the application. As seen on this file:
+- The application can be triggered on push to the main branch, on creation of a pull request to the main branch, and on the click of a button (Workflow Dispatch)
+- The Client Tier is tested on every run on the pipeline to ensure Continuous Testing.
 
+The kubernetes manifest files (in the kubernetes directory) are configured to achieve scalability, database persistence, and password encryption.
 
+For scalability of the frontend (Azure-Vote-Front), Horizontal Pod Autoscaler resource (hpa.yml) is used to achieve this. This resource is used to adjust the number of pods in a deployment depending on CPU utilization. In the azure-vote-front deployment, the front-end container already requests 0.25 CPU, with a limit of 0.5 CPU. HPA autoscales the number of pods in the azure-vote-front deployment. If average CPU utilization across all pods exceeds 50% of their requested usage, the autoscaler increases the pods up to a maximum of 10 instances. A minimum of 3 instances is then defined for the deployment.
+
+For database persistence, a Persistent Vomume (PV) resource is created, and is mounted on the Redis database using Persistent Volume Claim resource. This enables the data stored in the database to be persistent, even after destruction of the redis pod. The PV already exists in the cluster before the deployment of the stack.
+
+For encrypting the Redis database's password, a Secret resource is created, and is referenced in the azure-vote-back deployment. This enables the protection of the database's password as the scret is encrypted.
+
+To manually deploy the voting app on a kubernetes cluster:
+Connect to your kubernetes cluster as instructed by your cluster provider.
+
+Create a namespace for the application:
+kubectl create namespace vote_app
+
+Create secret for the database password:
+kubectl create secret generic redis --from-literal="REDIS_PASSWORD=pass1234" -n vote-app
+
+Create a yaml file for the Redis database's Persistent Volume with the following content:
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: default
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+    
+
+Create the Persistent Volume:
+kubectl apply -f PV.yaml
+
+Deploy the voting application:
+kubectl apply -f kubernetes -n vote-app
+
+The azure-vote-front kubernetes service is a Load Balancer, which helps us to reach the application over the internet.
+In a few minutes, the application is deployed and you can visit the application on a browser via the Load Balancer's public IP.
+
+For this project, the application can be visited via http://20.84.228.230/
