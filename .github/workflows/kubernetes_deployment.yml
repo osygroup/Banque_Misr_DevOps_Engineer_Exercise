@@ -16,7 +16,8 @@ jobs:
 
     - name: Test
       #run: docker network inspect banque_misr_devops_engineer_exercise_default --network container:azure-vote-front
-      run: docker run jwilder/dockerize -wait http://172.18.0.2:8080/healthcheck -timeout 120s -wait-retry-interval 5s
+      #run: docker run jwilder/dockerize -wait http://172.18.0.2:8080/healthcheck -timeout 120s -wait-retry-interval 5s
+      run: curl http://172.18.0.2:8080
 
     - name: Azure Login
       uses: azure/login@v1
