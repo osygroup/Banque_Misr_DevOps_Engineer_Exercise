@@ -37,7 +37,7 @@ spec:
           name: redis
         volumeMounts:
         - name: pvc-claim
-          mountPath: /data/redis
+          mountPath: /bitnami/redis/data
       volumes:
       - name: pvc-claim
         persistentVolumeClaim:
