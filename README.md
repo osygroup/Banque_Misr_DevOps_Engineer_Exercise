@@ -41,6 +41,11 @@ Then use the docker-compose.yaml file to create the container image, download th
 
 docker-compose up -d  
 
+<p align="center">
+  !<img src="https://user-images.githubusercontent.com/46828049/201534627-15e5bb7a-2f63-4b68-be80-db26a312fc28.png">
+</p>
+
+
 Note that from the docker-compose.yaml, the redis database password is visible, which can be changed to any value of choice. This is for development scenarios only.
 
 
