@@ -15,7 +15,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Test
-      run: docker run --network container:azure-vote-front appropriate/curl --retry 10 --retry-connrefused http://localhost:8080/healthcheck
+      run: docker run appropriate/curl --retry 10 --retry-connrefused http://localhost:8080/healthcheck
 
     - name: Azure Login
       uses: azure/login@v1
@@ -29,4 +29,6 @@ jobs:
         kubectl get namespace -oname | grep "namespace/vote-app" \
             || kubectl create namespace vote-app
         kubectl apply -f kubernetes -n vote-app
+        
+
     
