@@ -1,6 +1,7 @@
 
 name: "Deploy app to k8s cluster"
 on:
+  workflow_dispatch:
   push:
     # run on push to master
     branches:
