@@ -18,3 +18,18 @@ The application is Two-tier architecture consists of two layers: Client Tier (na
 
 The Client Tier is a Python Flask app, while the Data Tier is a Redis Database.
 
+The voting app's stack can be deployed on Docker locally with the use of docker-compose, and also on kubernetes using Github Workflows.
+
+To deploy the app on Docker locally, clone this repo on your machine:
+
+git clone [https://github.com/Azure-Samples/azure-voting-app-redis.git](https://github.com/osygroup/Banque_Misr_DevOps_Engineer_Exercise.git)
+
+Change into the cloned directory:
+
+cd azure-voting-app-redis
+
+Then use the docker-compose.yaml file to create the container image, download the Redis image, and start the application:
+
+docker-compose up -d
+
+
