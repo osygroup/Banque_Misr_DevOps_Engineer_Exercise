@@ -15,16 +15,14 @@ jobs:
       run: docker-compose up -d
 
     - name: Test frontend
-      #run: docker network inspect banque_misr_devops_engineer_exercise_default --network container:azure-vote-front
-      #run: docker run jwilder/dockerize -wait http://172.18.0.2:8080/healthcheck -timeout 120s -wait-retry-interval 5s
-      #docker run appropriate/curl -s --retry 10 --retry-connrefused http://localhost:8080/
       run: |
         sleep 10
         if curl -s localhost:8080 | grep 'Azure Voting Appzz'
         then
             echo "Test passed!"
         else
-            docker run appropriate/curl -s --retry 10 --retry-connrefused http://localhost:8080/
+            echo "Test failed!"
+            exit 1
         fi  
 
     - name: Azure Login
