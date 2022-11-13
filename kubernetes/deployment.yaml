@@ -31,6 +31,8 @@ spec:
         env:
         - name: REDIS_PASSWORD
           value: "repassword"
+        - name: REDIS_AOF_ENABLED
+          value: "no"
         ports:
         - containerPort: 6379
           name: redis
