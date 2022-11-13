@@ -14,14 +14,19 @@ jobs:
     - name: Build the stack
       run: docker-compose up -d
 
-    - name: Test
-      run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
+    #- name: Test
+    #  run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Deploy to AKS
       run: |
-        az account set --subscription a2ba9ff7-3658-4acd-bbdd-279961ec4fac
-        az aks get-credentials --resource-group demo --name mercy
-        kubectl get namespace -oname | grep "namespace/clockifi-backend" \
-            || kubectl create namespace clockifi-backend
-        kubectl apply -f kubernetes -n clockifi-backend
+        az account set --subscription ${{ secrets.SUBSCRIPTION_ID }}
+        az aks get-credentials --resource-group RSG-DEV-REXP-CU --name dev-cluster
+        kubectl get namespace -oname | grep "namespace/vote-app" \
+            || kubectl create namespace vote-app
+        kubectl apply -f kubernetes -n vote-app
     
