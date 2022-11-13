@@ -19,7 +19,8 @@ jobs:
       #run: docker run jwilder/dockerize -wait http://172.18.0.2:8080/healthcheck -timeout 120s -wait-retry-interval 5s
       run: |
         sleep 10
-        curl localhost:8080
+        curl localhost:8080/
+        docker run --network container:azure-vote-front appropriate/curl -s --retry 10 --retry-connrefused http://localhost:8080/
       #run: curl -s localhost:8080 | grep 'Azure Voting App'
 
     - name: Azure Login
