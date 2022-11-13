@@ -33,7 +33,10 @@ spec:
           runAsUser: 0
         env:
         - name: REDIS_PASSWORD
-          value: "repassword"
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_PASSWORD
         - name: REDIS_AOF_ENABLED
           value: "no"
         ports:
@@ -92,7 +95,10 @@ spec:
         - name: REDIS
           value: "azure-vote-back"
         - name: REDIS_PWD
-          value: repassword
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_PASSWORD
 ---
 apiVersion: v1
 kind: Service
