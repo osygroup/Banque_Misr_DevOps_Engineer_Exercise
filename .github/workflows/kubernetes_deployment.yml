@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     
@@ -16,7 +15,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Test
-      run: docker run --network container:azure-vote-front appropriate/curl --retry 10 --retry-connrefused http://localhost:8080/healthcheck
+      run: docker run --network banque_misr_devops_engineer_exercise_default appropriate/curl --retry 10 --retry-connrefused http://localhost:8080/healthcheck
 
     - name: Azure Login
       uses: azure/login@v1
