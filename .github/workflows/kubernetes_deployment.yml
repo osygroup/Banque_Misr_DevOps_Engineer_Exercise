@@ -16,7 +16,7 @@ jobs:
 
     - name: Test
       #run: docker ps
-      run: docker run --network container:azure-vote-front appropriate/curl --retry 10 --retry-connrefused http://localhost:8080/healthcheck
+      run: docker run --network container:azure-vote-front jwilder/dockerize -wait http://localhost:8080/healthcheck -timeout 120s -wait-retry-interval 5s
 
     - name: Azure Login
       uses: azure/login@v1
