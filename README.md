@@ -47,7 +47,7 @@ The kubernetes manifest files (in the kubernetes directory) are configured to ac
 
 For scalability of the frontend (Azure-Vote-Front), Horizontal Pod Autoscaler resource (hpa.yml) is used to achieve this. This resource is used to adjust the number of pods in a deployment depending on CPU utilization. In the azure-vote-front deployment, the front-end container already requests 0.25 CPU, with a limit of 0.5 CPU. HPA autoscales the number of pods in the azure-vote-front deployment. If average CPU utilization across all pods exceeds 50% of their requested usage, the autoscaler increases the pods up to a maximum of 10 instances. A minimum of 3 instances is then defined for the deployment.  
 
-For database persistence, a Persistent Vomume (PV) resource is created, and is mounted on the Redis database using Persistent Volume Claim resource. This enables the data stored in the database to be persistent, even after destruction of the redis pod. The PV already exists in the cluster before the deployment of the stack.  
+For database persistence, a Persistent Vomume (PV) resource is created, and is mounted on the Redis database using Persistent Volume Claim resource. This enables the data stored in the database to be persistent, even after destruction of the redis pod. The PV already exists in the cluster before the deployment of the stack. The Persistent Volume Claim is created on deployment of the stack (in the deployment.yaml file). 
 
 For encrypting the Redis database's password, a Secret resource is created, and is referenced in the azure-vote-back deployment. This enables the protection of the database's password as the scret is encrypted.  
 
@@ -60,22 +60,22 @@ kubectl create namespace vote_app
 Create secret for the database password:  
 kubectl create secret generic redis --from-literal="REDIS_PASSWORD=pass1234" -n vote-app  
 
-Create a yaml file for the Redis database's Persistent Volume with the following content:  
+Create a yaml file for the Redis database's Persistent Volume of 2Gb with the following content:  
 
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-volume
-  labels:
-    type: local
-spec:
-  storageClassName: default
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/mnt/data"
+apiVersion: v1  
+kind: PersistentVolume  
+metadata:  
+&nbsp;&nbsp;name: pv-volume  
+&nbsp;&nbsp;labels:  
+&nbsp;&nbsp;&nbsp;&nbsp;type: local  
+spec:  
+&nbsp;&nbsp;storageClassName: default  
+&nbsp;&nbsp;capacity:  
+&nbsp;&nbsp;&nbsp;&nbsp;storage: 2Gi  
+&nbsp;&nbsp;accessModes:  
+&nbsp;&nbsp;&nbsp;&nbsp;- ReadWriteMany  
+&nbsp;&nbsp;hostPath:  
+&nbsp;&nbsp;&nbsp;&nbsp;path: "/mnt/data"  
     
 
 Create the Persistent Volume:
