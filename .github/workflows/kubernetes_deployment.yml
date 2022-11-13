@@ -17,7 +17,7 @@ jobs:
     - name: Test frontend
       run: |
         sleep 10
-        if curl -s localhost:8080 | grep 'Azure Voting Appzz'
+        if curl -s localhost:8080 | grep 'Azure Voting App'
         then
             echo "Test passed!"
         else
