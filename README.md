@@ -94,13 +94,13 @@ spec:
 &nbsp;&nbsp;&nbsp;&nbsp;path: "/mnt/data"  
     
 
-Create the Persistent Volume:
+Create the Persistent Volume:   
 kubectl apply -f PV.yaml
 
-Deploy the voting application:
+Deploy the voting application:   
 kubectl apply -f kubernetes -n vote-app
 
-The azure-vote-front kubernetes service is a Load Balancer, which helps us to reach the application over the internet.
+The azure-vote-front kubernetes service is a Load Balancer, which helps us to reach the application over the internet.   
 In a few minutes, the application is deployed and you can visit the application on a browser via the Load Balancer's public IP.
 
 <p align="center">
